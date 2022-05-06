@@ -15,8 +15,9 @@ namespace IdentityServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentityServer()
-                .AddInMemoryApiResources()
-                .AddInMemoryClients()
+                .AddInMemoryClients(Configuration.GetClients())
+                .AddInMemoryApiResources(Configuration.GetApiResources())
+                .AddInMemoryApiScopes(Configuration.GetApiScopes())
                 .AddDeveloperSigningCredential();
 
             services.AddControllersWithViews();
@@ -35,10 +36,7 @@ namespace IdentityServer
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
